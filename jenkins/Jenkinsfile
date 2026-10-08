@@ -16,6 +16,11 @@ pipeline {
                     bat 'npm run build'
                 }
             }
+            stage('Docker build'){
+                steps{
+                    bat "docker build -t gopimano1997/web:${env.BUILD_NUMBER} ."
+                }
+            }
         }
         post{
             success{archiveArtifacts 'build/**'}

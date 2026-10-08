@@ -21,6 +21,14 @@ pipeline {
                     bat "docker build -t gopimano1997/web:${env.BUILD_NUMBER} ."
                 }
             }
+            stage('Docker push'){
+                steps{
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub' , usernameVariable: 'USER', passwordVariable: 'PASS')]){
+                    bat 'echo %PASS%| docker login -u %USER% --password-stdin'
+                    bat "docker push gopimano1997/web:${env.BUILD_NUMBER}"
+                    }
+                }
+            }
         }
         post{
             success{archiveArtifacts 'build/**'}

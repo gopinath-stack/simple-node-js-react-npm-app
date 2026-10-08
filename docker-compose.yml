@@ -1,0 +1,7 @@
+services:
+  web:
+    image: gopimano1997/web:${TAG}
+    container_name: web-app
+    ports:
+      - "8085:80"
+    restart: unless-stopped

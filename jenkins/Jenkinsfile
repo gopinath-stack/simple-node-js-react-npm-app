@@ -1,5 +1,8 @@
 pipeline {
     agent any 
+    environment{
+        TAG = "${env.BUILD_NUMBER}"
+    }
     stages{
         stage('Install'){
             steps{
@@ -27,6 +30,17 @@ pipeline {
                     bat 'echo %PASS%| docker login -u %USER% --password-stdin'
                     bat "docker push gopimano1997/web:${env.BUILD_NUMBER}"
                     }
+                }
+            }
+            stage('Deploy'){
+                steps{
+                    bat 'docker compose up -d'
+                }
+            }
+            stage('Smoke Test'){
+                steps{
+                    sleep 5
+                    bat 'curl -f http://localhost:8085'
                 }
             }
         }
